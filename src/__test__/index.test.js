@@ -1,0 +1,1 @@
+import undeclared from '../src';
