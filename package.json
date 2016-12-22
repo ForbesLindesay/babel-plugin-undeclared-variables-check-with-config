@@ -15,6 +15,8 @@
   "devDependencies": {
     "babel-cli": "*",
     "babel-jest": "*",
+    "babel-plugin-transform-es2015-classes": "^6.18.0",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-preset-forbeslindesay": "*",
     "eslint": "*",
     "eslint-config-forbeslindesay": "*",
@@ -24,8 +26,8 @@
     "prepublish": "npm run build",
     "build": "babel src --out-dir lib",
     "lint": "eslint src",
-    "test": "jest ./src --coverage && npm run lint",
-    "watch": "jest ./src --coverage --watch"
+    "test": "jest ./src/** --coverage && npm run lint",
+    "watch": "jest --coverage --watch"
   },
   "repository": {
     "type": "git",

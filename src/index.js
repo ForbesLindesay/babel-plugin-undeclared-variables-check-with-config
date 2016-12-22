@@ -5,7 +5,17 @@ module.exports = function ({messages}) {
   return {
     visitor: {
       ReferencedIdentifier(path) {
-        const {node, scope} = path;
+        const {node} = path;
+
+        // a bug in babel means you have to walk the entire parent path if you want to ensure you have actually seen
+        // all scopes
+        let scope = path.scope;
+        let pp = path.parentPath;
+        while (pp && !scope.hasBinding(node.name)) {
+          scope = pp.scope;
+          pp = pp.parentPath;
+        }
+        if (scope.hasBinding(node.name)) return;
 
         const binding = scope.getBinding(node.name);
         if (binding && binding.kind === "type" && !path.parentPath.isFlow()) {
@@ -29,8 +39,6 @@ module.exports = function ({messages}) {
         ) {
           return;
         }
-
-        if (scope.hasBinding(node.name)) return;
 
         // get the closest declaration to offer as a suggestion
         // the variable name may have just been mistyped
@@ -62,4 +70,4 @@ module.exports = function ({messages}) {
       },
     },
   };
-}
+};

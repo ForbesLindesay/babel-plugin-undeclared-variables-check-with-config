@@ -1,0 +1,73 @@
+exports[`test Declared variables 1`] = `
+"
+import Foo from \'./foo\';
+
+class Bar extends Foo {
+  constructor(props) {
+    super(props);
+  }
+}"
+`;
+
+exports[`test Declared, transformed variables 1`] = `
+"function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn\'t been initialised - super() hasn\'t been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+import Foo from \'./foo\';
+
+let Bar = function (_Foo) {
+  _inherits(Bar, _Foo);
+
+  function Bar(props) {
+    _classCallCheck(this, Bar);
+
+    return _possibleConstructorReturn(this, (Bar.__proto__ || Object.getPrototypeOf(Bar)).call(this, props));
+  }
+
+  return Bar;
+}(Foo);"
+`;
+
+exports[`test Declared, transformed variables 2`] = `
+"var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn\'t been initialised - super() hasn\'t been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+import { Component, Children } from \'react\';
+
+let Provider = function (_Component) {
+  _inherits(Provider, _Component);
+
+  _createClass(Provider, [{
+    key: \'getChildContext\',
+    value: function getChildContext() {
+      return { loginClient: this.client };
+    }
+  }]);
+
+  function Provider(props, context) {
+    _classCallCheck(this, Provider);
+
+    var _this = _possibleConstructorReturn(this, (Provider.__proto__ || Object.getPrototypeOf(Provider)).call(this, props, context));
+
+    _this.client = props.client;
+    return _this;
+  }
+
+  _createClass(Provider, [{
+    key: \'render\',
+    value: function render() {
+      return Children.only(this.props.children);
+    }
+  }]);
+
+  return Provider;
+}(Component);"
+`;
