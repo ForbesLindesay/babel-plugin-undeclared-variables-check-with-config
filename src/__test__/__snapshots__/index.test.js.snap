@@ -145,3 +145,9 @@ var MyComponent = React.createClass({
   }
 });"
 `;
+
+exports[`test globals comment 1`] = `
+"
+/* global BlahBlahBlah, BingBingBing */
+console.log(BlahBlahBlah, BingBingBing);"
+`;

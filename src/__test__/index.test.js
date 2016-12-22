@@ -139,3 +139,18 @@ test('declared pug variables', () => {
   const {code} = transform(input, opts);
   expect(code).toMatchSnapshot();
 });
+
+test('globals comment', () => {
+  const opts = {
+    babelrc: false,
+    plugins: [
+      plugin,
+    ],
+  };
+  const input = `
+    /* global BlahBlahBlah, BingBingBing */
+    console.log(BlahBlahBlah, BingBingBing);
+  `;
+  const {code} = transform(input, opts);
+  expect(code).toMatchSnapshot();
+});

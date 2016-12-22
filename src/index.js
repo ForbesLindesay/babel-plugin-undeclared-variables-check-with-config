@@ -3,6 +3,17 @@ import leven from 'leven';
 
 module.exports = function ({messages}) {
   return {
+    pre(file) {
+      this.commmentGlobals = [];
+      file.ast.comments.forEach(({value}) => {
+        const v = value.trim();
+        if (/^global /.test(v)) {
+          v.replace(/^global /, '').split(',').forEach(name => {
+            this.commmentGlobals.push(name.trim());
+          });
+        }
+      });
+    },
     visitor: {
       ReferencedIdentifier(path) {
         const {node} = path;
@@ -56,6 +67,9 @@ module.exports = function ({messages}) {
         if (
           builtins.some(b => typeof globals[b][node.name] === 'boolean')
         ) {
+          return;
+        }
+        if (this.commmentGlobals.indexOf(node.name) !== -1) {
           return;
         }
 
