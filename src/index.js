@@ -9,17 +9,36 @@ module.exports = function ({messages}) {
 
         // a bug in babel means you have to walk the entire parent path if you want to ensure you have actually seen
         // all scopes
-        let scope = path.scope;
-        let pp = path.parentPath;
-        while (pp && !scope.hasBinding(node.name)) {
-          scope = pp.scope;
-          pp = pp.parentPath;
-        }
-        if (scope.hasBinding(node.name)) return;
+        let pp = path;
+        while (pp) {
+          const scope = pp.scope;
 
-        const binding = scope.getBinding(node.name);
-        if (binding && binding.kind === "type" && !path.parentPath.isFlow()) {
-          throw path.buildCodeFrameError(messages.get("undeclaredVariableType", node.name), ReferenceError);
+          const binding = scope.getBinding(node.name);
+          if (binding && binding.kind === "type" && !path.parentPath.isFlow()) {
+            throw path.buildCodeFrameError(messages.get("undeclaredVariableType", node.name), ReferenceError);
+          }
+
+          if (scope.hasBinding(node.name)) {
+            return;
+          }
+
+          // babel sometimes struggles to notice that variables declared in the `init` portion of loops are available
+          // throughout the loop
+          if (pp.node.type === 'ForStatement' && pp.node.init.type === 'VariableDeclaration') {
+            const name = JSON.stringify(node.name);
+            if (
+              pp.node.init.declarations.some(({id}) => {
+                if (id.type === 'Identifier') {
+                  return id.name === node.name;
+                }
+                return JSON.stringify(id).indexOf(name) !== -1;
+              })
+            ) {
+              return;
+            }
+          }
+
+          pp = pp.parentPath;
         }
 
         const opts = this.opts;
@@ -43,7 +62,7 @@ module.exports = function ({messages}) {
         // get the closest declaration to offer as a suggestion
         // the variable name may have just been mistyped
 
-        const bindings = scope.getAllBindings();
+        const bindings = path.scope.getAllBindings();
 
         let closest;
         let shortest = -1;

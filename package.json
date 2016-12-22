@@ -15,6 +15,7 @@
   "devDependencies": {
     "babel-cli": "*",
     "babel-jest": "*",
+    "babel-plugin-transform-es2015-block-scoping": "^6.21.0",
     "babel-plugin-transform-es2015-classes": "^6.18.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-preset-forbeslindesay": "*",

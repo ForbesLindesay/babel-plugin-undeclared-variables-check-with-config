@@ -2,6 +2,8 @@ import {transform} from 'babel-core';
 import plugin from '../';
 import classes from 'babel-plugin-transform-es2015-classes';
 import jsx from 'babel-plugin-transform-react-jsx';
+import pug from 'babel-plugin-transform-react-pug';
+import blockScoping from 'babel-plugin-transform-es2015-block-scoping';
 
 test('simple undeclared variable', () => {
   // counter example
@@ -25,7 +27,10 @@ test('jsx undeclared variable', () => {
       plugin,
     ],
   };
-  const input = `const x = <Foo />`;
+  const input = `
+    import React from 'react';
+    const x = <Foo />;
+  `;
   expect(
     () => transform(input, opts)
   ).toThrow(/Reference to undeclared variable "Foo"/);
@@ -97,6 +102,39 @@ test('Declared, transformed variables', () => {
         return Children.only(this.props.children);
       }
     }
+  `;
+  const {code} = transform(input, opts);
+  expect(code).toMatchSnapshot();
+});
+
+test('declared pug variables', () => {
+  const opts = {
+    babelrc: false,
+    plugins: [
+      pug,
+      jsx,
+      blockScoping,
+      plugin,
+    ],
+  };
+  const input = `
+  import React from 'react';
+  import Col from 'core/col';
+
+  const MyComponent = React.createClass({
+    render() {
+      const foo = [];
+
+      return pug\`
+        div
+          each list, col in foo
+            div(key=col)
+              Col(sm=4)
+                each div in list
+                  div(key=div.id)
+      \`;
+    },
+  });
   `;
   const {code} = transform(input, opts);
   expect(code).toMatchSnapshot();

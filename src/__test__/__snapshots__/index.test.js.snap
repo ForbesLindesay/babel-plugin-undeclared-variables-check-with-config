@@ -71,3 +71,77 @@ let Provider = function (_Component) {
   return Provider;
 }(Component);"
 `;
+
+exports[`test declared pug variables 1`] = `
+"function _pugFlattenInnerHelper(arr, val) {
+  return arr.concat(Array.isArray(val) ? _pugFlatten(val) : val);
+}
+
+function _pugFlatten(arr) {
+  return arr.reduce(_pugFlattenInnerHelper, []);
+}
+
+import React from \'react\';
+import Col from \'core/col\';
+
+var MyComponent = React.createClass({
+  render() {
+    var foo = [];
+
+    return React.createElement(
+      \'div\',
+      null,
+      function () {
+        var pug_nodes = [];
+        var _pug_arr = foo;
+
+        if (Array.isArray(_pug_arr)) {
+          var _loop = function (col) {
+            var list = _pug_arr[col];
+            pug_nodes.push(React.createElement(
+              \'div\',
+              {
+                key: \'pug:\' + col + \':0\'
+              },
+              React.createElement(
+                Col,
+                {
+                  sm: 4
+                },
+                function () {
+                  var _ret;
+
+                  var pug_nodes = [];
+                  var _pug_arr2 = list;
+
+                  if (Array.isArray(_pug_arr2)) {
+                    for (var _pug_index2 = 0; _pug_index2 < _pug_arr2.length; _pug_index2++) {
+                      var div = _pug_arr2[_pug_index2];
+                      pug_nodes.push(React.createElement(\'div\', {
+                        key: \'pug:\' + div.id + \':0\'
+                      }));
+                    }
+                  } else {
+                    throw new TypeError(\'Expected list to be an array.\');
+                  }
+
+                  _ret = pug_nodes;
+                  return _ret;
+                }()
+              )
+            ));
+          };
+
+          for (var col = 0; col < _pug_arr.length; col++) {
+            _loop(col);
+          }
+        } else {
+          throw new TypeError(\'Expected foo to be an array.\');
+        }
+
+        return pug_nodes;
+      }()
+    );
+  }
+});"
+`;
