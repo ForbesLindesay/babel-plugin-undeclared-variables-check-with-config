@@ -1,7 +1,7 @@
 import globals from 'globals';
 import leven from 'leven';
 
-export default function ({messages}) {
+module.exports = function ({messages}) {
   return {
     visitor: {
       ReferencedIdentifier(path) {
