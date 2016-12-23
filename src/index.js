@@ -17,6 +17,10 @@ module.exports = function ({messages}) {
     visitor: {
       ReferencedIdentifier(path) {
         const {node} = path;
+        if (!node.loc) {
+          // this ignores internal nodes.  It's not ideal, but they can have extremely complicated scoping
+          return;
+        }
 
         // a bug in babel means you have to walk the entire parent path if you want to ensure you have actually seen
         // all scopes
