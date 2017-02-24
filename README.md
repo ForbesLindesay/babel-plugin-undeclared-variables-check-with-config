@@ -1,5 +1,7 @@
 # babel-plugin-undeclared-variables-check-with-config
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/babel-plugin-undeclared-variables-check-with-config.svg)](https://greenkeeper.io/)
+
 This plugin throws a compile-time error on references to undeclared variables
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/babel-plugin-undeclared-variables-check-with-config/master.svg)](https://travis-ci.org/ForbesLindesay/babel-plugin-undeclared-variables-check-with-config)
